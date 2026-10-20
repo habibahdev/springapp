@@ -5,13 +5,13 @@ on:
       - develop
 
 jobs:
-  defaults:
-    runs:
-      working-directory: backend
-
   quality:
-    name: Standard Code
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    name: Standard Code
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
