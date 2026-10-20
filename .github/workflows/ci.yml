@@ -5,6 +5,10 @@ on:
       - develop
 
 jobs:
+  defaults:
+    runs:
+      working-directory: backend
+
   quality:
     name: Standard Code
     runs-on: ubuntu-latest
