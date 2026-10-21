@@ -14,13 +14,14 @@ jobs:
     name: Standard Code
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup JDK 21
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 21
+          cache: maven
           cache-dependency-path: backend/pom.xml
 
       - name: Checkstyle
@@ -49,13 +50,14 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup JDK 21
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 21
+          cache: maven
           cache-dependency-path: backend/pom.xml
 
       - name: Run unit tests
@@ -71,13 +73,14 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup JDK 21
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 21
+          cache: maven
           cache-dependency-path: backend/pom.xml
 
       - name: Check Docker
