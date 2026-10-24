@@ -1,0 +1,63 @@
+@startuml
+title SpringApp : Cas d'utilisation
+
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor "Visiteur" as V
+actor "Adhérant" as U
+actor "Administrateur" as A
+
+' Un adhérant est un visiteur authentifié
+V <|-- U
+
+rectangle "SpringApp" {
+    package "Catalogue" {
+    usecase "Consulter le catalogue" as UC1
+    usecase "Rechercher, filtrer\net trier les produits" as UC2
+    usecase "Consulter le détail\nd'un produit" as UC3
+    }
+
+    package "Panier et commandes" {
+    usecase "Gérer le panier" as UC4
+    usecase "Valider une commande" as UC5
+    usecase "Vérifier le stocke\net calculer le total" as UC6
+    usecase "Consulter mes commandes" as UC7
+    }
+
+    package "Compte" {
+    usecase "Créer un compte" as UC8
+    usecase "Se connecter" as UC9
+    usecase "Se déconnecter" as UC10
+    }
+
+    package "Administration" {
+    usecase "Gérer les produits\n(créer, modifier, supprimer)" as UC11
+    usecase "Gérer les catégories\n(créer, renommer, supprimer)" as UC12
+    usecase "Consulter toutes\nles commandes" as UC13
+    usecase "Changer le statut\nd'une commande" as UC14
+    }
+}
+V --> UC1
+V --> UC3
+V --> UC4
+V --> UC8
+V --> UC9
+
+U --> UC5
+U --> UC7
+U --> UC10
+
+A -> UC11
+A --> UC12
+A --> UC13
+A --> UC14
+
+UC2 .> UC1 : <<extend>>
+UC5 .> UC6 : <<include>>
+
+note right of UC14
+    PENDING, PAID, SHIPPED ou CANCELLED
+end note
+@enduml
