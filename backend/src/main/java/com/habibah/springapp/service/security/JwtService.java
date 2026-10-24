@@ -24,7 +24,7 @@ public class JwtService {
     private final SecretKey secretKey;
 
     /**
-     * Durée de validité d'un jeton, exprimée en milisecondes
+     * Durée de validité d'un jeton, exprimée en millisecondes
      */
     private final Long expirationMs;
 

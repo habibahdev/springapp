@@ -1,0 +1,64 @@
+@startuml
+title SpringApp : Diagramme UML
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+
+enum Role {
+USER,
+ADMIN
+}
+
+enum PurchaseStatus {
+PENDING,
+PAID,
+SHIPPED,
+CANCELLED
+}
+
+class User {
+- id : Long
+- email : String
+- password : String
+- fullName : String
+- role : Role
+}
+
+class Category {
+- id : Long
+- name : String
+- description : String
+- price : BigDecimal
+- stock : integer
+- imageUrl : String
+}
+
+class Purchase {
+- id : Long
+- customerName : String
+- customerEmail : String
+- shippingAddress : String
+- status : PurchaseStatus
+- createdAt : LocalDateTime
+- total : BigDecimal
++ addItem(item: Detail) : void
+}
+
+class Detail {
+- id : Long
+- quantity : integer
+- unitPrice : BigDecimal
+}
+
+User "0..1" <-- "0..*" Purchase : user
+Purchase "1" *-- "1..*" Detail : items
+Detail "0..*" --> "1" Product : product
+Product "0..*" --> "0..1" Category : category
+User --> Role
+Purchase --> PurchaseStatus
+
+note right of Detail
+    unitPrice = prix du produit au moment de la commande (prix figé)
+end note
+@enduml

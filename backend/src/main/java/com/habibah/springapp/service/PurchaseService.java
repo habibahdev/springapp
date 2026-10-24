@@ -67,7 +67,8 @@ public class PurchaseService {
             Product product = productRepository.findById(line.productId())
                     .orElseThrow(() -> new NotFoundException("Produit introuvable " + line.productId()));
             if (product.getStock() < line.quantity()) {
-                throw new BusinessException("Stock insuffisant pour " + product.getName() + " (dispo : " + product.getStock());
+                throw new BusinessException(
+                        "Stock insuffisant pour " + product.getName() + " (dispo : " + product.getStock());
             }
             product.setStock(product.getStock() - line.quantity());
             purchase.addItem(Detail.builder()
