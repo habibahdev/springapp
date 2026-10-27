@@ -1,36 +1,38 @@
 services:
-  db:
+  postgres:
     image: postgres:16
-    container_name: springapp-db
+    container_name: springapp_db
     environment:
       POSTGRES_DB: springappdb
-      POSTGRES_USER: springapp
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     ports:
         - "5432:5432"
-#    volumes:
-#      - springapp_data:/var/lib/postgresql/data
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U springapp -d springapp" ]
-#      interval: 5s
-#      timeout: 3s
-#      retries: 10
+    volumes:
+      - springapp_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
-#  backend:
-#    build: ./backend
-#    restart: unless-stopped
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/springappdb
-#      SPRING_DATASOURCE_USERNAME: springapp
-#      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-#      APP_JWT_SECRET: ${JWT_SECRET}
-#      APP_JWT_EXPIRATION: ${JWT_EXPIRATION}
-#      APP_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@springapp.com}
-#      APP_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-#      #APP_CORS_ALLOWED_ORIGIN: http://localhost:8080
-#
-#volumes:
-#  springapp_data:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      APP_JWT_SECRET: ${APP_JWT_SECRET}
+      APP_JWT_EXPIRATION: ${APP_JWT_EXPIRATION}
+      APP_CORS_ALLOWED_ORIGIN: http://localhost:8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  springapp_data:
