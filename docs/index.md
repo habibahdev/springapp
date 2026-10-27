@@ -171,5 +171,5 @@ Paramètres de `GET /api/products` :
 La documentation Swagger UI est disponible ici :
 
 ```bash
-http://localhost:8080/swagger
+http://localhost:8080/swagger-ui/index.html
 ```
