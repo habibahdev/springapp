@@ -1,7 +1,9 @@
 # SpringApp
 
+[![CI/CD](https://img.shields.io/github/actions/workflow/status/habibahdev/springapp/ci.yml?branch=develop&label=CI%2FCD&logo=githubactions&logoColor=white)](https://github.com/habibahdev/springapp/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=springboot&logoColor=white)
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Engine-2496ED?logo=docker&logoColor=white)
 ![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 
