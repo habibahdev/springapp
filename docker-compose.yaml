@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     ports:
-        - "5432:5432"
+        - "5433:5432"
     volumes:
       - springapp_data:/var/lib/postgresql/data
     healthcheck:
@@ -35,6 +35,16 @@ services:
       APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-}
     ports:
       - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
 
 volumes:
   springapp_data:

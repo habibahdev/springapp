@@ -20,7 +20,7 @@ const STORAGE_KEY = 'springapp_session';
 /**
  * Service responsable de la gestion de l'authentification des utilisateurs.
  */
-@Injectable({provideIn: 'root'})
+@Injectable({providedIn: 'root'})
 export class AuthService {
   /** client http utilisé pour communiquer avec l'api d'authentification */
   private readonly http = inject(HttpClient);

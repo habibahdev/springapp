@@ -109,7 +109,7 @@ export class LoginComponent {
     this.submitting.set(true);
     this.error.set(null);
     this.auth.login(this.form.getRawValue()).subscribe({
-      next: () => this.router.navigateByUrl(this.retuenUrl()),
+      next: () => this.router.navigateByUrl(this.returnUrl()),
       error: (err) => {
         this.error.set(apiErrorMessage(err));
         this.submitting.set(false);
