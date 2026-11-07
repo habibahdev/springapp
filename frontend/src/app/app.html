@@ -1,43 +1,38 @@
-<nav class="navbar navbar-expand-lg bg-shop sticky-top" data-bs-theme="dark">
-  <div class="container">
+<nav class="shop-navbar">
+  <div class="navbar-container">
+
     <a
-      class="navbar-brand fw-bold"
+      class="navbar-brand"
       [routerLink]="auth.isAdmin() ? '/admin' : '/'"
     >
-      <i class="bi bi-bag-heart me-2"></i>SpringApp
+      <i class="bi bi-bag-heart"></i>
+      <span>SpringApp</span>
     </a>
 
+    <!-- Menu mobile -->
     <button
-      class="navbar-toggler"
       type="button"
+      class="navbar-toggle"
       aria-label="Afficher ou masquer le menu"
       [attr.aria-expanded]="menuOpen()"
       (click)="menuOpen.set(!menuOpen())"
     >
-      <span class="navbar-toggler-icon"></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
 
     <div
-      class="collapse navbar-collapse"
-      [class.show]="menuOpen()"
+      class="navbar-content"
+      [class.menu-open]="menuOpen()"
       (click)="menuOpen.set(false)"
     >
-      <ul class="navbar-nav me-auto">
-        @if (auth.isAdmin()) {
-          <li class="nav-item">
+
+      <ul class="navbar-links">
+
+        @if (!auth.isAdmin()) {
+          <li>
             <a
-              class="nav-link"
-              routerLink="/admin"
-              routerLinkActive="active"
-            >
-              <i class="bi bi-speedometer2 me-1"></i>
-              Administration
-            </a>
-          </li>
-        } @else {
-          <li class="nav-item">
-            <a
-              class="nav-link"
               routerLink="/"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
@@ -45,105 +40,100 @@
               Catalogue
             </a>
           </li>
-
-          @if (auth.isLoggedIn()) {
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLink="/purchases"
-                routerLinkActive="active"
-              >
-                Mes commandes
-              </a>
-            </li>
-          }
+          <li>
+            <a
+              routerLink="/assistant"
+              routerLinkActive="active"
+              aria-label="Assistant IA"
+              title="Assistant IA"
+            >
+              <i class="bi bi-robot"></i>
+            </a>
+          </li>
         }
+
+        @if (auth.isLoggedIn() && !auth.isAdmin()) {
+          <li>
+            <a routerLink="/purchases" routerLinkActive="active">
+              Mes commandes
+            </a>
+          </li>
+        }
+
+        @if (auth.isAdmin()) {
+          <li>
+            <a routerLink="/admin" routerLinkActive="active">
+              Administration
+            </a>
+          </li>
+        }
+
       </ul>
 
-      <ul class="navbar-nav align-items-lg-center gap-lg-2">
-        @if (auth.isAdmin()) {
-          <li class="nav-item">
-            <span class="navbar-text d-flex align-items-center">
-              <i class="bi bi-shield-lock me-1"></i>
+      <ul class="navbar-actions">
+
+        @if (!auth.isAdmin()) {
+          <li>
+            <a
+              class="cart-link"
+              routerLink="/cart"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-cart3"></i>
+              <span>Panier</span>
+
+              @if (cart.count() > 0) {
+                <span class="cart-badge">{{ cart.count() }}</span>
+              }
+            </a>
+          </li>
+        }
+
+        @if (auth.isLoggedIn()) {
+          <li>
+            <span class="user-name">
+              <i class="bi bi-person-circle"></i>
               {{ auth.fullName() }}
             </span>
           </li>
 
-          <li class="nav-item">
+          <li>
             <button
               type="button"
-              class="btn btn-outline-light btn-sm"
+              class="logout-button"
               (click)="logout()"
             >
               Se déconnecter
             </button>
           </li>
         } @else {
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/cart"
-              routerLinkActive="active"
-            >
-              <i class="bi bi-cart3 me-1"></i>
-              Panier
 
-              @if (cart.count() > 0) {
-                <span class="badge rounded-pill text-bg-light ms-1">
-                  {{ cart.count() }}
-                </span>
-              }
+          <!-- Visiteur -->
+          <li>
+            <a routerLink="/login" routerLinkActive="active">
+              Se connecter
             </a>
           </li>
 
-          @if (auth.isLoggedIn()) {
-            <li class="nav-item">
-              <span class="navbar-text d-flex align-items-center">
-                <i class="bi bi-person-circle me-1"></i>
-                {{ auth.fullName() }}
-              </span>
-            </li>
-
-            <li class="nav-item">
-              <button
-                type="button"
-                class="btn btn-outline-light btn-sm"
-                (click)="logout()"
-              >
-                Se déconnecter
-              </button>
-            </li>
-          } @else {
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLink="/login"
-                routerLinkActive="active"
-              >
-                Se connecter
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="btn btn-light btn-sm" routerLink="/register">
-                Créer un compte
-              </a>
-            </li>
-          }
+          <li>
+            <a class="register-button" routerLink="/register">
+              Créer un compte
+            </a>
+          </li>
         }
+
       </ul>
     </div>
   </div>
 </nav>
 
-<main class="container py-4">
+<main class="shop-main">
   <router-outlet />
 </main>
 
-@if (!auth.isAdmin()) {
-  <footer class="border-top py-4 mt-5 text-body-secondary small">
-    <div class="container">
-      SpringApp — projet Spring Boot et Angular
-    </div>
-  </footer>
-}
+<footer class="shop-footer">
+  <div class="footer-container">
+    <span>SpringApp</span>
+    <span>Projet Spring Boot et Angular</span>
+  </div>
+</footer>
