@@ -1,0 +1,147 @@
+/* ============================================================================
+                                ADMINISTRATION
+   ============================================================================
+*/
+.admin-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 48px;
+}
+
+/* En-tête */
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+
+  h1 {
+    margin: 8px 0;
+    color: #292524;
+    font-size: 1.9rem;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+  }
+
+  p {
+    margin: 0;
+    color: #78716c;
+    font-size: 0.95rem;
+  }
+}
+
+.admin-eyebrow {
+  color: #1b4332;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid #dce8df;
+  background: #f3f7f3;
+  color: #1b4332;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Navigation */
+
+.admin-navigation {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  border-bottom: 1px solid #e7e5e4;
+  margin-bottom: 32px;
+
+  a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 2px 16px;
+    color: #78716c;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    i {
+      font-size: 1.05rem;
+    }
+
+    &:hover {
+      color: #1b4332;
+    }
+
+    &.active {
+      color: #1b4332;
+      font-weight: 650;
+
+      &::after {
+        position: absolute;
+        right: 0;
+        bottom: -1px;
+        left: 0;
+        height: 2px;
+        background: #1b4332;
+        content: '';
+      }
+    }
+  }
+}
+
+/* Contenu */
+
+.admin-content {
+  min-width: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 28px 20px;
+  }
+
+  .admin-header {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 28px;
+
+    h1 {
+      font-size: 1.6rem;
+    }
+  }
+
+  .admin-navigation {
+    gap: 20px;
+    overflow-x: auto;
+
+    a {
+      flex-shrink: 0;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-page {
+    padding: 24px 14px;
+  }
+
+  .admin-navigation {
+    gap: 16px;
+
+    a {
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+  }
+}

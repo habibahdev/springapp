@@ -1,0 +1,127 @@
+:host {
+  display: block;
+}
+
+.admin-orders {
+  color: var(--shop-ink, #292524);
+
+  .card {
+    background: #fff;
+    border: 1px solid #e7e5e4 !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgb(28 25 23 / 3%) !important;
+    overflow: hidden;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table {
+    vertical-align: middle;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+
+    thead th {
+      background: #f8f7f5;
+      color: #78716c;
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.055em;
+      text-transform: uppercase;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid #e7e5e4;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 1rem;
+      border-color: #f0eeeb;
+      color: #57534e;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover > * {
+      background: #fafaf9;
+    }
+
+    .fw-semibold {
+      color: #292524;
+      font-weight: 650 !important;
+    }
+  }
+
+.small {
+  font-size: 0.78rem;
+}
+
+.text-end.text-nowrap {
+  font-weight: 600;
+  color: #292524;
+}
+
+.form-select {
+  min-width: 8.5rem;
+  border: 1px solid #e7e5e4;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  padding: 0.45rem 2rem 0.45rem 0.65rem;
+  color: #44403c;
+  cursor: pointer;
+
+  &:focus {
+    border-color: #1b4332;
+    box-shadow: 0 0 0 3px rgb(27 67 50 / 10%);
+  }
+}
+
+.btn-outline-secondary {
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 550;
+  min-width: 75px;
+
+  &:hover {
+    background: #1b4332;
+    border-color: #1b4332;
+    color: #fff;
+  }
+}
+
+.bg-body-tertiary {
+  background: #fafaf9 !important;
+  padding: 1.25rem 1.5rem !important;
+
+  .small {
+    color: #78716c !important;
+    line-height: 1.6;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: #44403c;
+  }
+
+  li {
+    padding-left: 0.75rem;
+    border-left: 2px solid #d6e3da;
+  }
+}
+
+  .alert {
+    border-radius: 6px;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .table {
+      min-width: 750px;
+    }
+  }
+}

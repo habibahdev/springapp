@@ -1,0 +1,89 @@
+<div class="admin-orders">
+  @if (error(); as message) {
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+  }
+
+  <div class="card border-0 shadow-sm">
+    @if (purchases(); as list) {
+      @if (list.length === 0) {
+        <div class="card-body text-body-secondary">Aucune commande pour le moment.</div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+            <tr>
+              <th scope="col">N°</th>
+              <th scope="col">Date</th>
+              <th scope="col">Client</th>
+              <th scope="col" class="text-end">Total</th>
+              <th scope="col">Statut</th>
+              <th scope="col"><span class="visually-hidden">Détail</span></th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (o of list; track o.id) {
+                <tr>
+                  <td class="fw-semibold">{{ o.id }}</td>
+                  <td class="text-nowrap">{{ o.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  <td>
+                    {{ o.customerName }}<br />
+                    <span class="small text-body-secondary">{{ o.customerEmail }}</span>
+                  </td>
+                  <td class="text-end text-nowrap">{{ o.total | currency: 'EUR' }}</td>
+                  <td>
+                    <select
+                      #statusSelect
+                      class="form-select form-select-sm"
+                      style="min-width: 8.5rem"
+                      [attr.aria-label]="'Statut de la commande ' + o.id"
+                      (change)="changeStatus(o, statusSelect.value)"
+                    >
+                      @for (s of statuses; track s) {
+                        <option [value]="s" [selected]="s === o.status">{{ statusLabel[s] }}</option>
+                      }
+                    </select>
+                  </td>
+                  <td class="text-end">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary"
+                      [attr.aria-expanded]="expandedId() === o.id"
+                      (click)="toggle(o.id)"
+                    >
+                      {{ expandedId() === o.id ? 'Masquer' : 'Détail' }}
+                    </button>
+                  </td>
+                </tr>
+                @if (expandedId() === o.id) {
+                  <tr>
+                    <td colspan="6" class="bg-body-tertiary">
+                      <div class="small text-body-secondary mb-2" style="white-space: pre-line">
+                        Livraison : {{ o.shippingAddress }}
+                      </div>
+                      <ul class="list-unstyled mb-0">
+                        @for (item of o.items; track item.productId) {
+                          <li>
+                            {{ item.quantity }} × {{ item.productName }}
+                            <span class="text-body-secondary">
+                            ({{ item.unitPrice | currency: 'EUR' }} l'unité)
+                          </span>
+                          </li>
+                        }
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    } @else {
+      <div class="card-body text-center">
+        <div class="spinner-border spinner-border-sm text-primary" role="status">
+          <span class="visually-hidden">Chargement…</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

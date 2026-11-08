@@ -48,7 +48,9 @@ function passwordsMatch(group: AbstractControl): ValidationErrors | null {
 @Component({
   selector: 'app-register',
   imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css',
+  standalone: true,
 })
 export class RegisterComponent {
   /** service permettant de construire et de gérer le formulaire réactif */
