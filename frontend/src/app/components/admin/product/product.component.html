@@ -1,0 +1,154 @@
+<div class="admin-products">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h5 mb-0">Produits</h2>
+    <button type="button" class="btn btn-primary btn-sm" (click)="startNew()">
+      <i class="bi bi-plus-lg me-1"></i>Nouveau produit
+    </button>
+  </div>
+
+  @if (notice(); as message) {
+    <div class="alert alert-success" role="status">{{ message }}</div>
+  }
+  @if (error(); as message) {
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+  }
+
+  @if (formOpen()) {
+    <form [formGroup]="form" (ngSubmit)="save()" class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-4">
+        <h3 class="h5 mb-3">{{ editingId() === null ? 'Nouveau produit' : 'Modifier le produit' }}</h3>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-8">
+            <label for="name" class="form-label">Nom</label>
+            <input id="name" type="text" class="form-control" formControlName="name" [class.is-invalid]="invalid('name')" />
+            <div class="invalid-feedback">Indiquez le nom du produit.</div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <label for="categoryId" class="form-label">Catégorie</label>
+            <select id="categoryId" class="form-select" formControlName="categoryId">
+              <option [ngValue]="null">Sans catégorie</option>
+              @for (c of categories(); track c.id) {
+                <option [ngValue]="c.id">{{ c.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <label for="price" class="form-label">Prix (€)</label>
+            <input
+              id="price"
+              type="number"
+              step="0.01"
+              min="0.01"
+              class="form-control"
+              formControlName="price"
+              [class.is-invalid]="invalid('price')"
+            />
+            <div class="invalid-feedback">Indiquez un prix supérieur à 0.</div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input
+              id="stock"
+              type="number"
+              step="1"
+              min="0"
+              class="form-control"
+              formControlName="stock"
+              [class.is-invalid]="invalid('stock')"
+            />
+            <div class="invalid-feedback">Indiquez un stock supérieur ou égal à 0.</div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="imageUrl" class="form-label">URL de l'image</label>
+            <input id="imageUrl" type="url" class="form-control" formControlName="imageUrl" placeholder="https://…" />
+          </div>
+
+          <div class="col-12">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" rows="3" class="form-control" formControlName="description"></textarea>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button type="submit" class="btn btn-primary" [disabled]="saving()">
+            @if (saving()) {
+              <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            }
+            Enregistrer
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="closeForm()">Annuler</button>
+        </div>
+      </div>
+    </form>
+  }
+
+  <div class="card border-0 shadow-sm">
+    @if (result(); as pg) {
+      @if (pg.content.length === 0) {
+        <div class="card-body text-body-secondary">Aucun produit pour le moment.</div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+            <tr>
+              <th scope="col">Produit</th>
+              <th scope="col">Catégorie</th>
+              <th scope="col" class="text-end">Prix</th>
+              <th scope="col" class="text-end">Stock</th>
+              <th scope="col" class="text-end">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (p of pg.content; track p.id) {
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      @if (p.imageUrl) {
+                        <img [src]="p.imageUrl" [alt]="p.name" class="product-thumb" />
+                      } @else {
+                        <div class="product-thumb product-placeholder fs-4" aria-hidden="true">
+                          <i class="bi bi-image"></i>
+                        </div>
+                      }
+                      <span class="fw-semibold">{{ p.name }}</span>
+                    </div>
+                  </td>
+                  <td>{{ p.categoryName ?? '—' }}</td>
+                  <td class="text-end text-nowrap">{{ p.price | currency: 'EUR' }}</td>
+                  <td class="text-end">
+                    @if (p.stock === 0) {
+                      <span class="badge text-bg-secondary">0</span>
+                    } @else if (p.stock <= 5) {
+                      <span class="badge text-bg-warning">{{ p.stock }}</span>
+                    } @else {
+                      {{ p.stock }}
+                    }
+                  </td>
+                  <td class="text-end text-nowrap">
+                    <button type="button" class="btn btn-sm btn-outline-secondary me-1" (click)="edit(p)">Modifier</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove(p)">Supprimer</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    } @else {
+      <div class="card-body text-center">
+        <div class="spinner-border spinner-border-sm text-primary" role="status">
+          <span class="visually-hidden">Chargement…</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (result(); as pg) {
+    <app-pagination [page]="pg" (pageChange)="load($event)" />
+  }
+</div>

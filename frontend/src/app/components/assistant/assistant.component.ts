@@ -15,6 +15,7 @@ interface ChatMessage {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './assistant.component.html',
+  styleUrl: './assistant.component.css',
 })
 export class AssistantComponent {
   private readonly assistantService = inject(AssistantService);
@@ -66,7 +67,7 @@ export class AssistantComponent {
       error: () => {
         this.messages.push({
           role: 'assistant',
-          content: "Une erreur est sruvenue lors de la communication avec l'assistant"
+          content: "Une erreur est survenu lors de la communication avec l'assistant"
         });
         this.isLoading = false;
       }

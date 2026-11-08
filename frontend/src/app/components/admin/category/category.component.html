@@ -1,0 +1,73 @@
+<div class="admin-categories">
+  <div class="row g-4">
+    <div class="col-12 col-lg-4">
+      <form class="card border-0 shadow-sm" (ngSubmit)="save()">
+        <div class="card-body">
+          <h2 class="h5 mb-3">
+            {{ editingId() === null ? 'Nouvelle catégorie' : 'Modifier la catégorie' }}
+          </h2>
+          <label for="categoryName" class="form-label">Nom</label>
+          <input
+            id="categoryName"
+            type="text"
+            class="form-control mb-3"
+            [formControl]="name"
+            [class.is-invalid]="name.invalid && name.touched"
+          />
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">
+              {{ editingId() === null ? 'Ajouter' : 'Enregistrer' }}
+            </button>
+            @if (editingId() !== null) {
+              <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Annuler</button>
+            }
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-12 col-lg-8">
+      @if (error(); as message) {
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+      }
+
+      <div class="card border-0 shadow-sm">
+        @if (categories(); as list) {
+          @if (list.length === 0) {
+            <div class="card-body text-body-secondary">Aucune catégorie pour le moment.</div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+              <tr>
+                <th scope="col">Nom</th>
+                <th scope="col" class="text-end">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (c of list; track c.id) {
+                  <tr>
+                    <td>{{ c.name }}</td>
+                    <td class="text-end text-nowrap">
+                      <button type="button" class="btn btn-sm btn-outline-secondary me-1" (click)="edit(c)">
+                        Modifier
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove(c)">
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        } @else {
+          <div class="card-body text-center">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+              <span class="visually-hidden">Chargement…</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

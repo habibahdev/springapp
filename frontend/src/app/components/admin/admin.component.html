@@ -1,0 +1,51 @@
+<div class="admin-page">
+
+  <header class="admin-header">
+    <div>
+      <span class="admin-eyebrow">ESPACE DE GESTION</span>
+      <h1>Administration</h1>
+      <p>Gérez votre boutique et suivez son activité.</p>
+    </div>
+
+    <span class="admin-badge">
+      <i class="bi bi-shield-check"></i>
+      Administrateur
+    </span>
+  </header>
+
+  <nav class="admin-navigation" aria-label="Navigation administration">
+
+    <a
+      routerLink="products"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      <i class="bi bi-box-seam"></i>
+      <span>Produits</span>
+    </a>
+
+    <a
+      routerLink="categories"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      <i class="bi bi-tags"></i>
+      <span>Catégories</span>
+    </a>
+
+    <a
+      routerLink="purchases"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      <i class="bi bi-receipt"></i>
+      <span>Commandes</span>
+    </a>
+
+  </nav>
+
+  <section class="admin-content">
+    <router-outlet />
+  </section>
+
+</div>

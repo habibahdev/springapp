@@ -23,7 +23,9 @@ import {apiErrorMessage} from '../../shared/api_error';
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
+  standalone: true,
 })
 export class LoginComponent {
   /** service permettant de construire et de gérer le formulaire réactif */
