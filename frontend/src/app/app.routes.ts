@@ -27,6 +27,17 @@ export const routes: Routes = [
     loadComponent: () => import ('./components/assistant/assistant.component').then((m) => m.AssistantComponent)
   },
   {
+    path: '',
+    pathMatch: 'full',
+    title: 'Catalogue',
+    loadComponent: () => import('./components/catalog/products/products.component').then((m) => m.ProductsComponent)
+  },
+  {
+    path: 'products/:id',
+    title: 'Produit',
+    loadComponent: () => import('./components/catalog/detail/detail.component').then((m) => m.DetailComponent)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () => import('./components/admin/admin.component').then((m) => m.AdminComponent),
