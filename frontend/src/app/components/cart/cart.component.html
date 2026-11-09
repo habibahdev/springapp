@@ -1,0 +1,177 @@
+<div class="cart-page">
+  <div class="cart-header">
+    <div>
+      <span class="cart-eyebrow">VOTRE SÉLECTION</span>
+      <h1>Mon panier</h1>
+      <p>Retrouvez les articles que vous souhaitez commander.</p>
+    </div>
+
+    @if (!cart.isEmpty()) {
+      <span class="cart-count">
+        <i class="bi bi-bag"></i>
+        {{ cart.count() }} article(s)
+      </span>
+    }
+  </div>
+
+  @if (cart.isEmpty()) {
+    <section class="empty-cart">
+      <div class="empty-cart-icon">
+        <i class="bi bi-bag"></i>
+      </div>
+
+      <h2>Votre panier est vide</h2>
+      <p>
+        Vous n'avez pas encore ajouté d'article à votre panier.
+        Découvrez notre catalogue pour trouver votre bonheur.
+      </p>
+
+      <a routerLink="/" class="btn-shop">
+        Découvrir le catalogue
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </section>
+  } @else {
+    <div class="cart-layout">
+      <!-- Liste des produits -->
+      <section class="cart-products">
+        <div class="section-heading">
+          <h2>Articles sélectionnés</h2>
+          <span>{{ cart.count() }} article(s)</span>
+        </div>
+
+        <div class="product-list">
+          @for (line of cart.lines(); track line.productId) {
+            <article class="cart-product">
+              @if (line.imageUrl) {
+                <img
+                  [src]="line.imageUrl"
+                  [alt]="line.name"
+                  class="product-image"
+                />
+              } @else {
+                <div class="product-image product-placeholder">
+                  <i class="bi bi-image"></i>
+                </div>
+              }
+
+              <div class="product-info">
+                <a
+                  [routerLink]="['/products', line.productId]"
+                  class="product-name"
+                >
+                  {{ line.name }}
+                </a>
+
+                <span class="product-unit-price">
+                  {{ line.price | currency: 'EUR' }} / unité
+                </span>
+
+                <span class="product-stock">
+                  <i class="bi bi-check-circle"></i>
+                  En stock
+                </span>
+              </div>
+
+              <div class="product-quantity">
+                <button
+                  type="button"
+                  [attr.aria-label]="'Diminuer la quantité de ' + line.name"
+                  [disabled]="line.quantity <= 1"
+                  (click)="cart.setQuantity(line.productId, line.quantity - 1)"
+                >
+                  <i class="bi bi-dash"></i>
+                </button>
+
+                <span>{{ line.quantity }}</span>
+
+                <button
+                  type="button"
+                  [attr.aria-label]="'Augmenter la quantité de ' + line.name"
+                  [disabled]="line.quantity >= line.stock"
+                  (click)="cart.setQuantity(line.productId, line.quantity + 1)"
+                >
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+
+              <div class="product-total">
+                <span class="total-label">Sous-total</span>
+                <strong>
+                  {{ line.price * line.quantity | currency: 'EUR' }}
+                </strong>
+              </div>
+
+              <button
+                type="button"
+                class="remove-product"
+                [attr.aria-label]="'Retirer ' + line.name + ' du panier'"
+                title="Retirer cet article"
+                (click)="cart.remove(line.productId)"
+              >
+                <i class="bi bi-trash3"></i>
+              </button>
+            </article>
+          }
+        </div>
+
+        <div class="cart-footer">
+          <a routerLink="/" class="continue-shopping">
+            <i class="bi bi-arrow-left"></i>
+            Continuer mes achats
+          </a>
+
+          <button
+            type="button"
+            class="clear-cart"
+            (click)="cart.clear()"
+          >
+            <i class="bi bi-trash3"></i>
+            Vider le panier
+          </button>
+        </div>
+      </section>
+
+      <!-- Récapitulatif de la commande -->
+      <aside class="order-summary">
+        <div class="summary-heading">
+          <i class="bi bi-receipt"></i>
+          <h2>Récapitulatif</h2>
+        </div>
+
+        <div class="summary-details">
+          <div class="summary-row">
+            <span>Nombre d'articles</span>
+            <strong>{{ cart.count() }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Sous-total</span>
+            <strong>{{ cart.total() | currency: 'EUR' }}</strong>
+          </div>
+        </div>
+
+        <div class="summary-total">
+          <span>Total à payer</span>
+          <strong>{{ cart.total() | currency: 'EUR' }}</strong>
+        </div>
+
+        <p class="summary-notice">
+          <i class="bi bi-info-circle"></i>
+          Les prix et la disponibilité seront confirmés à la validation
+          de votre commande.
+        </p>
+
+        <a routerLink="/checkout" class="checkout-button">
+          Valider ma commande
+          <i class="bi bi-arrow-right"></i>
+        </a>
+
+        <div class="secure-payment">
+          <i class="bi bi-shield-check"></i>
+          <span>Commande sécurisée</span>
+        </div>
+      </aside>
+    </div>
+  }
+</div>
