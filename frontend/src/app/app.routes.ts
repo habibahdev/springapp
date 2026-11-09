@@ -38,6 +38,11 @@ export const routes: Routes = [
     loadComponent: () => import('./components/catalog/detail/detail.component').then((m) => m.DetailComponent)
   },
   {
+    path: 'cart',
+    title: 'Panier',
+    loadComponent: () => import('./components/cart/cart.component').then((m) => m.CartComponent)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () => import('./components/admin/admin.component').then((m) => m.AdminComponent),
