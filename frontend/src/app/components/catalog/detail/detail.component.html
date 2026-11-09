@@ -1,0 +1,94 @@
+@let p = product();
+
+@if (p === undefined) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement…</span>
+    </div>
+  </div>
+} @else if (p === null) {
+  <div class="text-center py-5">
+    <h1 class="h4">Produit introuvable</h1>
+    <p class="text-body-secondary">Ce produit n'existe plus ou le lien est incorrect.</p>
+    <a routerLink="/" class="btn btn-primary">Retour au catalogue</a>
+  </div>
+} @else {
+  <div class="product-detail-page">
+    <nav aria-label="Fil d'Ariane" class="mb-4">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+          <a routerLink="/">Catalogue</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ p.name }}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="row g-4">
+    <div class="col-12 col-md-6">
+      @if (p.imageUrl) {
+        <img [src]="p.imageUrl" [alt]="p.name" class="img-fluid rounded shadow-sm w-100" />
+      } @else {
+        <div class="product-img product-placeholder rounded shadow-sm" style="height: 320px" aria-hidden="true">
+          <i class="bi bi-image"></i>
+        </div>
+      }
+    </div>
+
+    <div class="col-12 col-md-6">
+      @if (p.categoryName) {
+        <div class="text-body-secondary mb-1">{{ p.categoryName }}</div>
+      }
+      <h1 class="h2">{{ p.name }}</h1>
+      <p class="fs-3 fw-bold mb-3">{{ p.price | currency: 'EUR' }}</p>
+
+      @if (p.description) {
+        <p style="max-width: 60ch; white-space: pre-line">{{ p.description }}</p>
+      }
+
+      <p class="mb-3">
+        @if (p.stock === 0) {
+          <span class="badge text-bg-secondary">Rupture de stock</span>
+        } @else if (p.stock <= 5) {
+          <span class="badge text-bg-warning">Plus que {{ p.stock }} en stock</span>
+        } @else {
+          <span class="badge text-bg-success">En stock</span>
+        }
+      </p>
+
+      @if (remaining(p) > 0) {
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="input-group" style="width: 9rem">
+            <button type="button" class="btn btn-outline-secondary" aria-label="Diminuer la quantité" (click)="decrement()">
+              <i class="bi bi-dash"></i>
+            </button>
+            <output class="form-control text-center" aria-live="polite">{{ quantity() }}</output>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              aria-label="Augmenter la quantité"
+              [disabled]="quantity() >= remaining(p)"
+              (click)="increment(remaining(p))"
+            >
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addToCart(p)">
+            <i class="bi bi-cart-plus me-1"></i>Ajouter au panier
+          </button>
+        </div>
+      } @else if (p.stock > 0) {
+        <p class="text-body-secondary">Tout le stock disponible est déjà dans votre panier.</p>
+      }
+
+      @if (added()) {
+        <div class="alert alert-success d-flex flex-wrap align-items-center justify-content-between gap-2" role="status">
+          <span>Produit ajouté au panier.</span>
+          <a routerLink="/cart" class="alert-link">Voir le panier</a>
+        </div>
+      }
+    </div>
+    </div>
+  </div>
+}
