@@ -127,6 +127,6 @@ public class ProductSpecification {
      * @return texte échappé
      */
     private static String escapeLike(String value) {
-        return value.replace("\\", "\\\\").replace("%", "\\%").replace("", "\\_");
+        return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
     }
 }

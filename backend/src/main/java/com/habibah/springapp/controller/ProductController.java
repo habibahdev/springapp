@@ -80,12 +80,14 @@ public class ProductController {
             @Parameter(description = "Champ de tri : name, price ou id")
             @RequestParam(defaultValue = "name") String sort
     ) {
+        int safePage = Math.max(page, 0);
         int safeSize = Math.clamp(size, 1, 50);
         String safeSort = switch (sort) {
             case "price", "id" -> sort;
             default -> "name";
         };
-        return productService.search(categoryId, q, PageRequest.of(page, safeSize, Sort.by(safeSort)));
+        PageRequest pageable = PageRequest.of(safePage, safeSize, Sort.by(safeSort));
+        return productService.search(categoryId, q, pageable);
     }
 
     /**

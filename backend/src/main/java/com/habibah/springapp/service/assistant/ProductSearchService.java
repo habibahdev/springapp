@@ -58,9 +58,9 @@ public class ProductSearchService {
                     .forEach(specifications::add);
         }
         specifications.add(ProductSpecification.priceGreaterThanEqualOrEqualTo(criteria.minPrice()));
-        specifications.add(ProductSpecification.priceGreaterThanEqualOrEqualTo(criteria.maxPrice()));
+        specifications.add(ProductSpecification.priceLessThanEqualOrEqualTo(criteria.maxPrice()));
         specifications.add(ProductSpecification.hasCategory(criteria.categoryId()));
-        if (criteria.available()) {
+        if (criteria.onlyAvailable()) {
             specifications.add(ProductSpecification.isAvailable());
         }
         return Specification.allOf(specifications);

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {AssistantService} from '../../core/services/assistant.service';
 import {RecommendedProduct} from '../../core/models/assistant.model';
+import {HttpErrorResponse} from '@angular/common/http';
 
 /**
  * Représente un message échangé dans la conversation avec l'assistant
@@ -93,10 +94,18 @@ export class AssistantComponent {
 
         this.isLoading = false;
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
+        let errorMessage = "Une erreur est survenu lors de la communication avec l'assistant";
+        if (error.status === 503) {
+          errorMessage = "Notre assistant est temporairement indisponible.";
+        } else if (error.status === 401) {
+          errorMessage = "Votre session n'est plus valide. Veuillez vous reconnecter.";
+        } else if (error.status === 0) {
+          errorMessage = "Impossible de contacter le serveur";
+        }
         this.messages.push({
           role: 'assistant',
-          content: "Une erreur est survenu lors de la communication avec l'assistant"
+          content: errorMessage
         });
         this.isLoading = false;
       }

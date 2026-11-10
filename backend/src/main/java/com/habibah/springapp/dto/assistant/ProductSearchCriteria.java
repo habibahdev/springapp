@@ -10,14 +10,14 @@ import java.util.List;
  * @param minPrice prix minimal souhaité, ou {@code null} si non précisé
  * @param maxPrice prix maximal souhaité, ou {@code null} si non précisé
  * @param categoryId identifiant de la catégorie souhaité, ou {@code null}
- * @param available indique si seuls les produits en stock doivent être retournés
+ * @param onlyAvailable indique si seuls les produits en stock doivent être retournés
  */
 public record ProductSearchCriteria(
         List<String> keywords,
         BigDecimal minPrice,
         BigDecimal maxPrice,
         Long categoryId,
-        boolean available
+        boolean onlyAvailable
 ) {
 
     /**
