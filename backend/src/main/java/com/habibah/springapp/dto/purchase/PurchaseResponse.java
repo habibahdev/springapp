@@ -1,5 +1,6 @@
-package com.habibah.springapp.dto;
+package com.habibah.springapp.dto.purchase;
 
+import com.habibah.springapp.dto.detail.DetailResponse;
 import com.habibah.springapp.entity.enums.PurchaseStatus;
 
 import java.math.BigDecimal;

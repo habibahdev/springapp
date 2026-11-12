@@ -1,8 +1,8 @@
 package com.habibah.springapp.controller;
 
-import com.habibah.springapp.dto.AuthResponse;
-import com.habibah.springapp.dto.LoginRequest;
-import com.habibah.springapp.dto.RegisterRequest;
+import com.habibah.springapp.dto.auth.AuthResponse;
+import com.habibah.springapp.dto.auth.LoginRequest;
+import com.habibah.springapp.dto.auth.RegisterRequest;
 import com.habibah.springapp.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

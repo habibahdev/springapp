@@ -1,4 +1,4 @@
-package com.habibah.springapp.dto;
+package com.habibah.springapp.dto.detail;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

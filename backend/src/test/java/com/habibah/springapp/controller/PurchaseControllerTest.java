@@ -1,9 +1,9 @@
 package com.habibah.springapp.controller;
 
-import com.habibah.springapp.dto.DetailRequest;
-import com.habibah.springapp.dto.DetailResponse;
-import com.habibah.springapp.dto.PurchaseRequest;
-import com.habibah.springapp.dto.PurchaseResponse;
+import com.habibah.springapp.dto.detail.DetailRequest;
+import com.habibah.springapp.dto.detail.DetailResponse;
+import com.habibah.springapp.dto.purchase.PurchaseRequest;
+import com.habibah.springapp.dto.purchase.PurchaseResponse;
 import com.habibah.springapp.entity.enums.PurchaseStatus;
 import com.habibah.springapp.service.PurchaseService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.habibah.springapp.controller;
 
-import com.habibah.springapp.dto.CategoryRequest;
-import com.habibah.springapp.dto.CategoryResponse;
+import com.habibah.springapp.dto.category.CategoryRequest;
+import com.habibah.springapp.dto.category.CategoryResponse;
 import com.habibah.springapp.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

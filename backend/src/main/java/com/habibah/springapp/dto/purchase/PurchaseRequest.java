@@ -1,5 +1,6 @@
-package com.habibah.springapp.dto;
+package com.habibah.springapp.dto.purchase;
 
+import com.habibah.springapp.dto.detail.DetailRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

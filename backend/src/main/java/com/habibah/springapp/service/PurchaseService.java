@@ -1,9 +1,9 @@
 package com.habibah.springapp.service;
 
-import com.habibah.springapp.dto.DetailRequest;
-import com.habibah.springapp.dto.DetailResponse;
-import com.habibah.springapp.dto.PurchaseRequest;
-import com.habibah.springapp.dto.PurchaseResponse;
+import com.habibah.springapp.dto.detail.DetailRequest;
+import com.habibah.springapp.dto.detail.DetailResponse;
+import com.habibah.springapp.dto.purchase.PurchaseRequest;
+import com.habibah.springapp.dto.purchase.PurchaseResponse;
 import com.habibah.springapp.entity.Detail;
 import com.habibah.springapp.entity.Product;
 import com.habibah.springapp.entity.Purchase;
@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Service métier chargé de gérer les commandes des utilisateurs.
  * <p>Il permet de créer une commande, de calculer son montant total,
- * de mettre à jour son statut et de consulter les commandes existnates.</p>
+ * de mettre à jour son statut et de consulter les commandes existantes.</p>
  * <p>Lors de la création d'une commande, le service vérifie l'existence
  * de l'utilisateur et des produits demandés, contrôle le stock disponible,
  * met à jour les quantités en stock et associe les lignes de commande à

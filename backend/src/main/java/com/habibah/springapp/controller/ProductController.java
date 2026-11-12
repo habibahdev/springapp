@@ -1,7 +1,7 @@
 package com.habibah.springapp.controller;
 
-import com.habibah.springapp.dto.ProductRequest;
-import com.habibah.springapp.dto.ProductResponse;
+import com.habibah.springapp.dto.product.ProductRequest;
+import com.habibah.springapp.dto.product.ProductResponse;
 import com.habibah.springapp.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -1,7 +1,7 @@
 package com.habibah.springapp.controller;
 
-import com.habibah.springapp.dto.PurchaseRequest;
-import com.habibah.springapp.dto.PurchaseResponse;
+import com.habibah.springapp.dto.purchase.PurchaseRequest;
+import com.habibah.springapp.dto.purchase.PurchaseResponse;
 import com.habibah.springapp.entity.enums.PurchaseStatus;
 import com.habibah.springapp.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;

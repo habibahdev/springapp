@@ -1,8 +1,8 @@
 package com.habibah.springapp.controller;
 
-import com.habibah.springapp.dto.AuthResponse;
-import com.habibah.springapp.dto.LoginRequest;
-import com.habibah.springapp.dto.RegisterRequest;
+import com.habibah.springapp.dto.auth.AuthResponse;
+import com.habibah.springapp.dto.auth.LoginRequest;
+import com.habibah.springapp.dto.auth.RegisterRequest;
 import com.habibah.springapp.entity.enums.Role;
 import com.habibah.springapp.service.AuthService;
 import org.junit.jupiter.api.Test;

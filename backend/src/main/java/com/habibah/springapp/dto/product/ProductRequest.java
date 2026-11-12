@@ -1,4 +1,4 @@
-package com.habibah.springapp.dto;
+package com.habibah.springapp.dto.product;
 
 import jakarta.validation.constraints.*;
 
