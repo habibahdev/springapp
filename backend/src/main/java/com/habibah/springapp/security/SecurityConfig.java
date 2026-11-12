@@ -78,6 +78,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/**", "/api/categories/**").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/assistant/**").access(new WebExpressionAuthorizationManager("hasRole('USER') or isAnonymous()"))
+                        .requestMatchers(HttpMethod.POST, "/api/payments/checkout").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/payments/webhook").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -106,7 +108,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Configure les règles cors applicquées aux routes de l'API.
+     * Configure les règles cors appliquées aux routes de l'API.
      * <p>L'origine autorisée est définie par la propriété {@code app.cors.allowed-origin}.
      * Les méthodes http get, post, put, patch, delete et options sont autorisées, ainsi
      * que toutes les en-têtes de requêtes.</p>

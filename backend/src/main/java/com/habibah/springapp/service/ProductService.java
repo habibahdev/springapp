@@ -1,7 +1,7 @@
 package com.habibah.springapp.service;
 
-import com.habibah.springapp.dto.ProductRequest;
-import com.habibah.springapp.dto.ProductResponse;
+import com.habibah.springapp.dto.product.ProductRequest;
+import com.habibah.springapp.dto.product.ProductResponse;
 import com.habibah.springapp.entity.Category;
 import com.habibah.springapp.entity.Product;
 import com.habibah.springapp.exception.NotFoundException;

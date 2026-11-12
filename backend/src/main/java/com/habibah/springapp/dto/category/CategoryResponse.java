@@ -1,4 +1,4 @@
-package com.habibah.springapp.dto;
+package com.habibah.springapp.dto.category;
 
 /**
  * Représente les infos d'une catégorie de produits retournées par l'API.

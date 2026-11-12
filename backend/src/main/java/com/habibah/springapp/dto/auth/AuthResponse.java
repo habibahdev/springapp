@@ -1,4 +1,4 @@
-package com.habibah.springapp.dto;
+package com.habibah.springapp.dto.auth;
 
 import com.habibah.springapp.entity.enums.Role;
 

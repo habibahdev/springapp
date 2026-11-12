@@ -4,6 +4,7 @@ import com.habibah.springapp.entity.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository permettant de gérer la persistance des achats.
@@ -25,4 +26,11 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
      * de création décroissante ; liste vide si aucun achat ne correspond
      */
     List<Purchase> findByUserEmailOrderByCreatedAtDesc(String email);
+
+    /**
+     * Recherche une commande à partir de son identifiant de session stripe.
+     * @param sessionId identifiant de session checkout
+     * @return commande si elle existe
+     */
+    Optional<Purchase> findByStripeSessionId(String sessionId);
 }

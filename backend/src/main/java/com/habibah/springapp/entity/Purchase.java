@@ -116,4 +116,16 @@ public class Purchase {
         item.setPurchase(this);
         items.add(item);
     }
+
+    /**
+     * Identifiant de la session Stripe.
+     */
+    @Column(name = "stripe_session_id", unique = true)
+    private String stripeSessionId;
+
+    /**
+     * Identifiant de la session Stripe Checkout associée à la commande.
+     */
+    @Column(name = "stripe_payment_intent_id")
+    private String stripePaymentIntentId;
 }
