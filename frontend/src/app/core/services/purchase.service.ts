@@ -2,6 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Purchase, PurchaseRequest, PurchaseStatus} from '../models/purchase.model';
+import {PurchasePaymentStatus} from '../models/payment.model';
 import {Observable} from 'rxjs';
 
 /**
@@ -60,5 +61,9 @@ export class PurchaseService {
   updateStatus(id: number, status: PurchaseStatus): Observable<Purchase> {
     const params = new HttpParams().set('status', status);
     return this.http.patch<Purchase>(`${this.url}/${id}/status`, null, {params});
+  }
+
+  findMyPurchaseById(id: number): Observable<PurchasePaymentStatus> {
+    return this.http.get<PurchasePaymentStatus>(`${this.url}/purchases/me/${id}`)
   }
 }

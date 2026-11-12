@@ -1,0 +1,201 @@
+<div class="checkout-page">
+  <div class="checkout-header">
+    <a routerLink="/cart" class="back-link">
+      <i class="bi bi-arrow-left"></i>
+      Retour au panier
+    </a>
+
+    <h1>Finaliser votre commande</h1>
+    <p>Plus qu'une étape avant de profiter de vos achats.</p>
+
+    <div class="checkout-steps">
+      <div class="step completed">
+        <span class="step-number"><i class="bi bi-check-lg"></i></span>
+        <span>Panier</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step active">
+        <span class="step-number">2</span>
+        <span>Livraison</span>
+      </div>
+
+      <div class="step-line"></div>
+
+      <div class="step">
+        <span class="step-number">3</span>
+        <span>Paiement</span>
+      </div>
+    </div>
+  </div>
+
+  @if (cart.isEmpty()) {
+    <div class="empty-checkout">
+      <div class="empty-icon">
+        <i class="bi bi-bag"></i>
+      </div>
+      <h2>Votre panier est vide</h2>
+      <p>Découvrez nos produits et trouvez votre bonheur.</p>
+      <a routerLink="/" class="checkout-button">
+        Parcourir le catalogue
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  } @else {
+    <div class="checkout-layout">
+      <section class="checkout-main">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="checkout-card">
+            <div class="card-heading">
+              <div class="heading-icon">
+                <i class="bi bi-truck"></i>
+              </div>
+              <div>
+                <h2>Informations de livraison</h2>
+                <p>Où souhaitez-vous recevoir votre commande ?</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="customerName">Nom complet</label>
+                <div class="input-wrapper">
+                  <i class="bi bi-person"></i>
+                  <input
+                    id="customerName"
+                    type="text"
+                    formControlName="customerName"
+                    autocomplete="name"
+                    placeholder="Votre nom complet"
+                    readonly
+                  />
+                </div>
+                @if (invalid('customerName')) {
+                  <small class="field-error">Indiquez le nom du destinataire.</small>
+                }
+              </div>
+
+              <div class="form-field">
+                <label for="customerEmail">Adresse e-mail</label>
+                <div class="input-wrapper">
+                  <i class="bi bi-envelope"></i>
+                  <input
+                    id="customerEmail"
+                    type="email"
+                    formControlName="customerEmail"
+                    autocomplete="email"
+                    placeholder="exemple@email.com"
+                    readonly
+                  />
+                </div>
+                @if (invalid('customerEmail')) {
+                  <small class="field-error">Indiquez une adresse e-mail valide.</small>
+                }
+              </div>
+
+              <div class="form-field full-width">
+                <label for="shippingAddress">Adresse de livraison</label>
+                <div class="input-wrapper textarea-wrapper">
+                  <i class="bi bi-geo-alt"></i>
+                  <textarea
+                    id="shippingAddress"
+                    rows="3"
+                    formControlName="shippingAddress"
+                    autocomplete="street-address"
+                    placeholder="Numéro, rue, code postal, ville..."
+                    [class.invalid]="invalid('shippingAddress')"
+                  ></textarea>
+                </div>
+                @if (invalid('shippingAddress')) {
+                  <small class="field-error">Indiquez votre adresse de livraison.</small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-info">
+            <i class="bi bi-shield-lock"></i>
+            <div>
+              <strong>Paiement sécurisé</strong>
+              <p>Vous serez redirigé vers Stripe pour effectuer votre paiement en toute sécurité.</p>
+            </div>
+          </div>
+
+          @if (error(); as message) {
+            <div class="checkout-error" role="alert">
+              <i class="bi bi-exclamation-circle"></i>
+              {{ message }}
+            </div>
+          }
+
+          <button
+            type="submit"
+            class="checkout-button submit-button"
+            [disabled]="submitting()"
+          >
+            @if (submitting()) {
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              Redirection vers stripe...
+            } @else {
+              Procéder au paiement
+              <i class="bi bi-arrow-right"></i>
+            }
+          </button>
+        </form>
+      </section>
+
+      <aside class="checkout-summary">
+        <div class="summary-card">
+          <h2>Récapitulatif</h2>
+          <p class="summary-count">{{ cart.lines().length }} article(s) dans votre panier</p>
+
+          <div class="summary-products">
+            @for (line of cart.lines(); track line.productId) {
+              <div class="summary-product">
+                <div class="product-details">
+                  <span class="product-quantity">{{ line.quantity }}</span>
+                  <span class="product-name">{{ line.name }}</span>
+                </div>
+                <strong>{{ line.price * line.quantity | currency: 'EUR' }}</strong>
+              </div>
+            }
+          </div>
+
+          <div class="summary-calculation">
+            <div>
+              <span>Sous-total</span>
+              <span>{{ cart.total() | currency: 'EUR' }}</span>
+            </div>
+            <div>
+              <span>Livraison</span>
+              <span class="free-shipping">Offerte</span>
+            </div>
+          </div>
+
+          <div class="summary-total">
+            <span>Total à payer</span>
+            <strong>{{ cart.total() | currency: 'EUR' }}</strong>
+          </div>
+
+          <a routerLink="/cart" class="edit-cart-link">
+            <i class="bi bi-pencil"></i>
+            Modifier mon panier
+          </a>
+        </div>
+
+        <div class="summary-reassurance">
+          <div>
+            <i class="bi bi-lock"></i>
+            <span>Paiement sécurisé par Stripe</span>
+          </div>
+          <div>
+            <i class="bi bi-box-seam"></i>
+            <span>Commande suivie et sécurisée</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  }
+</div>
