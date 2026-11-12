@@ -43,6 +43,21 @@ export const routes: Routes = [
     loadComponent: () => import('./components/cart/cart.component').then((m) => m.CartComponent)
   },
   {
+    path: 'checkout',
+    title: 'Validation de la commande',
+    loadComponent: () => import('./components/checkout/checkout.component').then((m) => m.CheckoutComponent)
+  },
+  {
+    path: 'payment/success',
+    title: 'Paiement confirmé',
+    loadComponent: () => import('./components/payment/success/success.component').then((m) => m.PaymentSuccessComponent)
+  },
+  {
+    path: 'payment/cancel',
+    title: 'Paiement annulé',
+    loadComponent: () => import('./components/payment/cancel/cancel.component').then((m) => m.PaymentCancelComponent)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () => import('./components/admin/admin.component').then((m) => m.AdminComponent),
