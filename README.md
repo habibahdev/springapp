@@ -38,9 +38,7 @@ SpringApp a été conçu pour :
 
 ### Fonctionnalités à mettre en place
 
-* système de paiement (Stripe) ;
 * système d'envoi d'e-mail ;
-* remise du stock à jour quand une commande est annulée ;
 
 ## Documentation
 
