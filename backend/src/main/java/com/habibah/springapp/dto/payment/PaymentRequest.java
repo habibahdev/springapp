@@ -8,8 +8,9 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * Données nécessaires à la création d'un paiement.
- * @param shippingAddress adresse de livraison
+ * DTO contenant les infos nécessaires à la création d'une commande
+ * et à l'initialisation de son paiement.
+ * @param shippingAddress adresse de livraison obligatoire et non vide
  * @param items articles à commander
  */
 public record PaymentRequest(

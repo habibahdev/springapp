@@ -63,7 +63,12 @@ export class PurchaseService {
     return this.http.patch<Purchase>(`${this.url}/${id}/status`, null, {params});
   }
 
+  /**
+   * récupère le statut de paiement d'une commande appartenant
+   * à l'utilisateur connecté
+   * @param id
+   */
   findMyPurchaseById(id: number): Observable<PurchasePaymentStatus> {
-    return this.http.get<PurchasePaymentStatus>(`${this.url}/purchases/me/${id}`)
+    return this.http.get<PurchasePaymentStatus>(`${this.url}/me/${id}`)
   }
 }
