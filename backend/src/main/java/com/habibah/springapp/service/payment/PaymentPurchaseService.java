@@ -23,11 +23,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service responsable de la gestion des commandes associées au processus
+ * de paiement.
+ * Il assure la création des commandes en attente de paiement, la réservation et
+ * la restitution des stocks, ainsi que la mise à jour du statut des commandes
+ * en fonction des événements stripe.
+ */
 @RequiredArgsConstructor
 @Service
 public class PaymentPurchaseService {
+    /** repository permettant de consulter et de sauvegarder les commandes */
     private final PurchaseRepository purchaseRepository;
+
+    /** repository permettant de consulter et de verrouiller les produits */
     private final ProductRepository productRepository;
+
+    /** repository permettant de retrouver les utilisateurs */
     private final UserRepository userRepository;
 
     /**
@@ -35,6 +47,8 @@ public class PaymentPurchaseService {
      * @param paymentRequest données de la commande
      * @param email adresse e-mail de l'utilisateur authentifié
      * @return commande créée
+     * @throws NotFoundException si l'utilisateur ou l'un des produits demandés n'existe pas
+     * @throws BusinessException si le stock disponible est insuffisant
      */
     @Transactional
     public PurchaseResponse createPendingPurchase(PaymentRequest paymentRequest, String email) {
@@ -76,9 +90,11 @@ public class PaymentPurchaseService {
     }
 
     /**
-     * Associe une session Stripe à une commande.
+     * Associe une session Stripe à une commande existante.
      * @param purchaseId identifiant de la commande
      * @param sessionId identifiant de la session Stripe
+     * @throws NotFoundException si la commande n'existe pas
+     * @throws BusinessException si la commande n'est plus en attente
      */
     @Transactional
     public void attachStripeSession(Long purchaseId, String sessionId) {
@@ -93,6 +109,7 @@ public class PaymentPurchaseService {
     /**
      * Annule une commande en attente et restitue les stocks réservés
      * @param purchaseId identifiant de la commande
+     * @throws NotFoundException si la commande ou l'un de ses produits n'existe pas
      */
     @Transactional
     public void cancelPendingPurchase(Long purchaseId) {
@@ -114,6 +131,8 @@ public class PaymentPurchaseService {
      * Confirme le paiement d'une commande à partir de sa session stripe
      * @param sessionId identifiant de la session stripe
      * @param paymentIntentId identifiant du paiement stripe
+     * @throws NotFoundException si aucune commande ne correspond à la session stripe
+     * @throws BusinessException si la commande n'est plus en attente
      */
     @Transactional
     public void markAsPaid(String sessionId, String paymentIntentId) {
@@ -132,6 +151,7 @@ public class PaymentPurchaseService {
     /**
      * Annule une commande à partir de son identifiant de session stripe
      * @param sessionId identifiant de la session stripe
+     * @throws NotFoundException si aucune commande ne correspond à cette session
      */
     @Transactional
     public void cancelPendingPurchaseBySessionId(String sessionId) {
@@ -141,9 +161,9 @@ public class PaymentPurchaseService {
     }
 
     /**
-     * Convertit une commande en Dto
+     * Convertit une commande en Dto PurchaseResponse
      * @param purchase commande à convertir
-     * @return dto de la commande
+     * @return dto contenant les infos de la commande
      */
     private PurchaseResponse toResponse(Purchase purchase) {
         List<DetailResponse> items = purchase.getItems().stream()
