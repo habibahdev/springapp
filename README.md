@@ -39,6 +39,7 @@ SpringApp a été conçu pour :
 ### Fonctionnalités à mettre en place
 
 * système d'envoi d'e-mail ;
+* espace perso de l'utilisateur ;
 
 ## Documentation
 
