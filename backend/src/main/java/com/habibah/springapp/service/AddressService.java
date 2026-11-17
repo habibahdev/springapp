@@ -17,12 +17,13 @@ import java.util.List;
  * Service responsable de la gestion des adresses de livraison des utilisateurs.
  * <p>Il permet de créer, consulter, modifier et supprimer les adresses
  * enregistrées par un utilisateur.</p>
- * <p>Il garantit également qu'un utilisateur ne possède qu'une seule adresse de
- * livraison par défaut</p>
+ * <p>Il garantit qu'un utilisateur ne possède qu'une seule adresse
+ * de livraison par défaut.</p>
  */
 @RequiredArgsConstructor
 @Service
 public class AddressService {
+
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
 
@@ -41,10 +42,10 @@ public class AddressService {
     }
 
     /**
-     * Enregistre une nouvelle adresse pour l'utilisateur authentifié
-     * <p>Si l'utilisateur ne possède aucune adresse, la nouvelle adresse devient
-     * automatiquement son adresse par défaut</p>
-     * @param request infos de la nouvelle adresse
+     * Enregistre une nouvelle adresse pour l'utilisateur authentifié.
+     * <p>La nouvelle adresse devient l'adresse par défaut uniquement si
+     * ce statut est explicitement demandé.</p>
+     * @param request informations de la nouvelle adresse
      * @param email adresse e-mail de l'utilisateur
      * @return adresse enregistrée
      */
@@ -52,11 +53,11 @@ public class AddressService {
     public AddressResponse createAddress(AddressRequest request, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Utilisateur introuvable"));
-        boolean hasDefaultAddress = addressRepository.existsByUserEmailAndDefaultAddressTrue(email);
-        boolean makeDefault = request.defaultAddress() || !hasDefaultAddress;
-        if (makeDefault) {
+
+        if (request.defaultAddress()) {
             clearDefaultAddress(email);
         }
+
         Address address = Address.builder()
                 .label(request.label())
                 .recipientName(request.recipientName())
@@ -66,38 +67,36 @@ public class AddressService {
                 .city(request.city())
                 .country(request.country())
                 .phone(request.phone())
-                .defaultAddress(makeDefault)
+                .defaultAddress(request.defaultAddress())
                 .user(user)
                 .build();
+
         return toResponse(addressRepository.save(address));
     }
 
     /**
      * Modifie une adresse appartenant à l'utilisateur authentifié.
-     * <p>Une adresse ne peut pas être retirée du statut par défaut si elle est la
-     * seule adresse enregistrée.</p>
+     * <p>Le statut par défaut de l'adresse est mis à jour conformément
+     * à la valeur transmise dans la requête.</p>
      * @param id identifiant de l'adresse
-     * @param request nouvelles infos
+     * @param request nouvelles informations
      * @param email adresse e-mail de l'utilisateur
      * @return adresse modifiée
      */
     @Transactional
-    public AddressResponse updateAddress(Long id, AddressRequest request, String email) {
+    public AddressResponse updateAddress(
+            Long id,
+            AddressRequest request,
+            String email
+    ) {
         Address address = findUserAddress(id, email);
+
         if (request.defaultAddress()) {
             setDefaultAddressInternal(address, email);
-        } else if (address.isDefaultAddress()) {
-            List<Address> addresses = addressRepository
-                    .findAllByUserEmailOrderByDefaultAddressDescIdDesc(email);
-            addresses.stream()
-                    .filter(candidate -> !candidate.getId().equals(id))
-                    .findFirst()
-                    .ifPresent(candidate -> {
-                        address.setDefaultAddress(false);
-                        addressRepository.saveAndFlush(address);
-                        candidate.setDefaultAddress(true);
-                    });
+        } else {
+            address.setDefaultAddress(false);
         }
+
         address.setLabel(request.label());
         address.setRecipientName(request.recipientName());
         address.setStreet(request.street());
@@ -106,42 +105,32 @@ public class AddressService {
         address.setCity(request.city());
         address.setCountry(request.country());
         address.setPhone(request.phone());
+
         return toResponse(addressRepository.save(address));
     }
 
     /**
      * Supprime une adresse appartenant à l'utilisateur authentifié.
-     * <p>Si l'adresse supprimée était l'adresse par défaut, une autre adresse est
-     * automatiquement désignée comme adresse par défaut lorsqu'elle existe.</p>
+     * <p>La suppression d'une adresse par défaut ne provoque pas
+     * la désignation automatique d'une autre adresse par défaut.</p>
      * @param id identifiant de l'adresse
      * @param email adresse e-mail de l'utilisateur
      */
     @Transactional
     public void deleteAddress(Long id, String email) {
         Address address = findUserAddress(id, email);
-        /*List<Address> addresses = addressRepository
-                .findAllByUserEmailOrderByDefaultAddressDescIdDesc(email);
-        Address next = address.isDefaultAddress()
-                ? addresses.stream()
-                .filter(candidate -> !candidate.getId().equals(id))
-                .findFirst()
-                .orElse(null)
-                : null;*/
+
         addressRepository.delete(address);
         addressRepository.flush();
-
-        /*if (next != null) {
-            next.setDefaultAddress(true);
-            addressRepository.save(next);
-        }*/
     }
 
     /**
-     * Définit une adresse comme adresse de livraison par défaut
+     * Définit explicitement une adresse comme adresse de livraison par défaut.
      * @param id identifiant de l'adresse
-     * @param email adresse em-ail de l'utilisateur
+     * @param email adresse e-mail de l'utilisateur
      * @return adresse devenue l'adresse par défaut
-     * @throws NotFoundException si l'adresse n'existe pas ou n'appartient pas à l'utilisateur
+     * @throws NotFoundException si l'adresse n'existe pas ou n'appartient pas
+     * à l'utilisateur
      */
     @Transactional
     public AddressResponse setDefaultAddress(Long id, String email) {
@@ -151,9 +140,9 @@ public class AddressService {
     }
 
     /**
-     * Convertit une entité Address en AddressResponse
+     * Convertit une entité Address en AddressResponse.
      * @param address adresse à convertir
-     * @return représentation dto de l'adresse
+     * @return représentation DTO de l'adresse
      */
     private AddressResponse toResponse(Address address) {
         return new AddressResponse(
@@ -171,12 +160,20 @@ public class AddressService {
     }
 
     /**
-     * Définit une adresse comme une adresse par défaut.
+     * Définit une adresse comme adresse par défaut.
+     * <p>Si une autre adresse est actuellement définie par défaut,
+     * son statut est retiré avant de définir la nouvelle.</p>
      * @param address adresse à définir par défaut
      * @param email adresse e-mail du propriétaire
      */
     private void setDefaultAddressInternal(Address address, String email) {
-        clearDefaultAddress(email);
+        addressRepository.findByUserEmailAndDefaultAddressTrue(email)
+                .filter(currentDefault -> !currentDefault.getId().equals(address.getId()))
+                .ifPresent(currentDefault -> {
+                    currentDefault.setDefaultAddress(false);
+                    addressRepository.saveAndFlush(currentDefault);
+                });
+
         address.setDefaultAddress(true);
         addressRepository.saveAndFlush(address);
     }
