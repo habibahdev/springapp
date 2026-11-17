@@ -119,21 +119,21 @@ public class AddressService {
     @Transactional
     public void deleteAddress(Long id, String email) {
         Address address = findUserAddress(id, email);
-        List<Address> addresses = addressRepository
+        /*List<Address> addresses = addressRepository
                 .findAllByUserEmailOrderByDefaultAddressDescIdDesc(email);
         Address next = address.isDefaultAddress()
                 ? addresses.stream()
                 .filter(candidate -> !candidate.getId().equals(id))
                 .findFirst()
                 .orElse(null)
-                : null;
+                : null;*/
         addressRepository.delete(address);
         addressRepository.flush();
 
-        if (next != null) {
+        /*if (next != null) {
             next.setDefaultAddress(true);
             addressRepository.save(next);
-        }
+        }*/
     }
 
     /**
