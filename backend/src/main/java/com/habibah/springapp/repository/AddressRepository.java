@@ -35,7 +35,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
      * @param email adresse e-mail de l'utilisateur
      * @return true si une adresse par défaut existe
      */
-    boolean existsByUserEmail(String email);
+    boolean existsByUserEmailAndDefaultAddressTrue(String email);
 
     /**
      * Recherche l'adresse par défaut d'un utilisateur
