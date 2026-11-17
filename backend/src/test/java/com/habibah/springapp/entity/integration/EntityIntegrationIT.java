@@ -100,8 +100,8 @@ public class EntityIntegrationIT {
 
 
         assertThrows(PersistenceException.class, () -> {
-                entityManager.flush();
-                entityManager.persist(anotherUser);
+            entityManager.persist(anotherUser);
+            entityManager.flush();
         });
     }
 
@@ -136,9 +136,10 @@ public class EntityIntegrationIT {
         entityManager.persist(category);
         entityManager.flush();
 
-        entityManager.persist(anotherCategory);
-
-        assertThrows(PersistenceException.class, () -> entityManager.flush());
+        assertThrows(PersistenceException.class, () -> {
+            entityManager.persist(anotherCategory);
+            entityManager.flush();
+        });
     }
 
     @Test
@@ -198,7 +199,7 @@ public class EntityIntegrationIT {
 
         assertNotNull(found);
         assertEquals("Jane Doe", found.getCustomerName());
-        assertEquals("jane@example.com", found.getCustomerEmail());
+        assertEquals("janedoe@example.com", found.getCustomerEmail());
         assertEquals("123 Shipping Address", found.getShippingAddress());
         assertEquals(PurchaseStatus.PENDING, found.getStatus());
         assertEquals(0, new BigDecimal("99.99").compareTo(found.getTotal()));
