@@ -80,6 +80,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/assistant/**").access(new WebExpressionAuthorizationManager("hasRole('USER') or isAnonymous()"))
                         .requestMatchers(HttpMethod.POST, "/api/payments/checkout").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/payments/webhook").permitAll()
+                        .requestMatchers("/api/addresses/**").hasRole("USER")
+                        .requestMatchers("/api/users/me/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

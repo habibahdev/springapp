@@ -4,13 +4,11 @@ import com.habibah.springapp.dto.detail.DetailRequest;
 import com.habibah.springapp.dto.detail.DetailResponse;
 import com.habibah.springapp.dto.payment.PaymentRequest;
 import com.habibah.springapp.dto.purchase.PurchaseResponse;
-import com.habibah.springapp.entity.Detail;
-import com.habibah.springapp.entity.Product;
-import com.habibah.springapp.entity.Purchase;
-import com.habibah.springapp.entity.User;
+import com.habibah.springapp.entity.*;
 import com.habibah.springapp.entity.enums.PurchaseStatus;
 import com.habibah.springapp.exception.BusinessException;
 import com.habibah.springapp.exception.NotFoundException;
+import com.habibah.springapp.repository.AddressRepository;
 import com.habibah.springapp.repository.ProductRepository;
 import com.habibah.springapp.repository.PurchaseRepository;
 import com.habibah.springapp.repository.UserRepository;
@@ -22,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service responsable de la gestion des commandes associées au processus
@@ -42,6 +42,9 @@ public class PaymentPurchaseService {
     /** repository permettant de retrouver les utilisateurs */
     private final UserRepository userRepository;
 
+    /** repository permettant de retrouver les adresses d'un utilisateur */
+    private final AddressRepository addressRepository;
+
     /**
      * Crée une commande en attente et réserve les produits demandés
      * @param paymentRequest données de la commande
@@ -54,10 +57,12 @@ public class PaymentPurchaseService {
     public PurchaseResponse createPendingPurchase(PaymentRequest paymentRequest, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Utilisateur introuvable"));
+        Address address = addressRepository.findByIdAndUserEmail(paymentRequest.addressId(), email)
+                .orElseThrow(() -> new NotFoundException("Adresse de livraison introuvable"));
         Purchase purchase = Purchase.builder()
                 .customerName(user.getFullName())
                 .customerEmail(user.getEmail())
-                .shippingAddress(paymentRequest.shippingAddress())
+                .shippingAddress(formatShippingAddress(address))
                 .user(user)
                 .status(PurchaseStatus.PENDING)
                 .build();
@@ -183,5 +188,22 @@ public class PaymentPurchaseService {
                 purchase.getTotal(),
                 items
         );
+    }
+
+    /**
+     * Construit une représentation textuelle de l'adresse de livraison.
+     * @param address adresse enregistrée de l'utilisateur
+     * @return adresse complète sous forme de texte
+     */
+    private String formatShippingAddress(Address address) {
+        return Stream.of(
+                address.getRecipientName(),
+                address.getStreet(),
+                address.getAdditionalAddress(),
+                address.getPostalCode(),
+                address.getCity(),
+                address.getCountry())
+                .filter(value -> value != null && !value.isBlank())
+                .collect(Collectors.joining());
     }
 }
