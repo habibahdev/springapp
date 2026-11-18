@@ -32,14 +32,17 @@ SpringApp a été conçu pour :
 
 ## Fonctionnalités principales
 
-* authentification et gestion des utilisateurs ;
-* recherche de produits, filtrage de produits ;
-* création et gestion des commandes ;
+✅ authentification et gestion des utilisateurs ;
+
+✅ recherche de produits, filtrage de produits ;
+
+✅ création et gestion des commandes ;
 
 ### Fonctionnalités à mettre en place
 
-* système d'envoi d'e-mail ;
-* espace perso de l'utilisateur ;
+⏳ système d'envoi d'e-mail ;
+
+⏳ espace perso de l'utilisateur ;
 
 ## Documentation
 
