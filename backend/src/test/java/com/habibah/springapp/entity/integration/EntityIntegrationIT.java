@@ -8,7 +8,7 @@ import com.habibah.springapp.entity.Category;
 import com.habibah.springapp.entity.enums.PurchaseStatus;
 import com.habibah.springapp.entity.enums.Role;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -97,9 +97,7 @@ public class EntityIntegrationIT {
         entityManager.persist(user);
         entityManager.flush();
 
-
-
-        assertThrows(PersistenceException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             entityManager.persist(anotherUser);
             entityManager.flush();
         });
@@ -136,7 +134,7 @@ public class EntityIntegrationIT {
         entityManager.persist(category);
         entityManager.flush();
 
-        assertThrows(PersistenceException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             entityManager.persist(anotherCategory);
             entityManager.flush();
         });
