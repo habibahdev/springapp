@@ -34,4 +34,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * {@code false} sinon
      */
     boolean existsByEmail(String email);
+
+    /**
+     * Vérifie si une adresse e-mail est utilisée par un autre utilisateur
+     * @param email adresse e-mail à vérifier
+     * @param id identifiant de l'utilisateur exclu de la recherche
+     * @return true si un autre utilisateur possède cette adresse
+     */
+    boolean existsByEmailAndIdNot(String email, Long id);
 }
